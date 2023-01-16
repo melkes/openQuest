@@ -1,0 +1,43 @@
+html{
+  background-color: black;
+  color: white;
+}
+.gameStartContainer{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 300px;
+  height: 200px;
+  margin:auto;
+  padding: 20px;
+  margin-top: 10em;
+  border: 1px solid white;
+  
+}
+
+.gameContainer{
+  display: grid;
+  height: 700px;
+  grid-template-columns: 75% 25%;
+  grid-template-rows: 80% 20%;
+  grid-template-areas: "textBox imageBox"
+                        "buttonBox imageBox";  
+  border: 1px solid white;
+}
+.textBox{
+  grid-area: textBox;
+  border: 1px solid white;
+}
+.buttonBox{
+  grid-area: buttonBox;
+  border: 1px solid white;
+}
+.imageBox{
+  grid-area: imageBox;
+  border: 1px solid white;
+}
+
+.hidden {
+  display:none;
+}
