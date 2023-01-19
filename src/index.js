@@ -13,9 +13,9 @@ async function getAPIData() {
     model: "text-davinci-003",
     prompt: localStorage.runningPrompt,
     max_tokens:350,
-    frequency_penalty: 0,
+    frequency_penalty: .5,
     presence_penalty: .6,
-    temperature: 1.2,
+    temperature: .5,
     
     
   });
@@ -75,6 +75,7 @@ function emailAmbi () {
 function gameLoop() {
   getAPIData()
     .then(function(response) {
+      localStorage.runningPrompt += response.data.choices[0].text;
       // only handles single response - need to account for full history in response👍
       console.log(response)
       let [scene, remainder] = response.data.choices[0].text.split('Feature>');
@@ -126,7 +127,7 @@ function startGame(){
 }
 //make sure we define choices with 1,2,3 *
 function initializePrompt(theme) {
-  localStorage.runningPrompt = `Greg is a choose-your-own-adventure generator in a fantasy setting. He gives the user a scene description of between 100 and 200 words that contains one distinct feature or character. At the end of the scene description, he names and describes that feature on its own line in exactly 5 words, prefixed with the word "Feature>". Greg then offers three choices, each on their own line, for the user to select to move onto the next scene. After 3 scenes, he concludes the adventure. Do not include a scene title.`;
+  localStorage.runningPrompt = `Greg is a choose-your-own-adventure generator in a ${theme} setting. He gives the user a scene description of between 100 and 200 words that contains one distinct feature or character. At the end of the scene description, he names and describes that feature on its own line in exactly 5 words, prefixed with the word "Feature>". Greg then offers three choices, each on their own line, for the user to select to move onto the next scene. After 3 scenes, he concludes the adventure. Do not include a scene title.`;
 }
 
 document.getElementById("startButton").addEventListener('click', startGame);
@@ -136,3 +137,12 @@ Array.from(document.getElementsByClassName('selection')).forEach(function(button
     gameLoop();
   });
 });
+
+
+
+
+// You find yourself in a mysterious forest. The trees are tall and ancient, their trunks twisted and knotted like a gnarled hand. The air is still and silent, not even the rustle of a leaf can be heard. You look around and see a small clearing with a single boulder in the center. Feature> Boulder: Ancient, grey, and large.
+// Do you: 
+// A) Approach the boulder
+// B) Look for a path
+// C) Listen for any sounds
