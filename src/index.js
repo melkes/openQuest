@@ -1,6 +1,5 @@
-import '../src/css/style.css'
+import "../src/css/style.css";
 const { Configuration, OpenAIApi } = require("openai");
-
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -12,16 +11,19 @@ async function getAPIData() {
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: localStorage.runningPrompt,
+
+
     max_tokens:350,
     frequency_penalty: 0,
     presence_penalty: 0,
     temperature: .7,
     
     
+
   });
+  console.log(getAPIData().response);
   return response;
 }
-
 
 // `
 // PROMPT 1
@@ -31,8 +33,6 @@ async function getAPIData() {
 // A) Approach the statue cautiously
 // B) Take a closer look
 // C) Turn and run away
-
-
 
 // PROMPT2
 // You find yourself standing in a clearing surrounded by tall trees and shady bushes. The sun is shining, but there is a chill in the air. In the center of the clearing is a large, ancient stone statue of a dragon. Its eyes seem to be watching you.
@@ -54,6 +54,10 @@ async function getAPIData() {
 //loading function ()
 //image loading function()
 // grab the response and parse from the initial send. needs to split up the scene
+
+
+
+
 
 async function createImage(imgPrompt) {
   const response = await openai.createImage({
@@ -94,17 +98,20 @@ function updateOptions (choice1, choice2, choice3) {
     input3: choice3,
   }
   localStorage.choices = JSON.stringify(choices);
+
 }
 
-function emailAmbi () {
-  document.getElementById('aiInput').innerText = "You broke it! Email ambio.pk@gmail.com to complain."
+function emailAmbi() {
+  document.getElementById("aiInput").innerText =
+    "You broke it! Email ambio.pk@gmail.com to complain.";
 }
 
 function gameLoop() {
   getAPIData()
-    .then(function(response) {
+    .then(function (response) {
       localStorage.runningPrompt += response.data.choices[0].text;
       // only handles single response - need to account for full history in response👍
+
       console.log(response)
       let scene;
       let feature;
@@ -123,32 +130,34 @@ function gameLoop() {
       console.log(feature)
       console.log(choices)
       const [choice1, choice2, choice3] = response.data.choices[0].text.split('\n').slice(-3);  //feature might break
+
       //picture
       updateScene(scene, feature);
-      //update options 
+      //update options
       updateOptions(choice1, choice2, choice3);
     })
     .catch(emailAmbi);
-  
-  
-  // printResponse(response);  
+
+  // printResponse(response);
   //print response
   //reads options
   //handler function assigns to 3 buttons
-    //on click updates local.storage
-    //with new line opt 1 2 3 
-    //runs getAPIData()
+  //on click updates local.storage
+  //with new line opt 1 2 3
+  //runs getAPIData()
   //re-run parsefuncion(new response);
-    
+
   // document.getElementById. .. . . .
 
   // localStorage.runningPrompt
 }
 
+
 function startGame(){
   const theme = document.getElementById('themeInput').value || 'fantasy';
   localStorage.theme = theme;
   localStorage.choices = {};
+
   initializePrompt(theme);
   let startBox = document.getElementById("startBox");
   startBox.classList.add("hidden");
@@ -161,9 +170,9 @@ function startGame(){
       //or parser
       //or display thing
       // and buttons => 
+
   gameLoop();
   //getAPIData().then(function (resp) {console.log(resp)})
-  
 }
 //make sure we define choices with 1,2,3 *
 function initializePrompt(theme) {
@@ -174,15 +183,28 @@ document.getElementById("startButton").addEventListener('click', startGame);
 Array.from(document.getElementsByClassName('selection')).forEach(function(button){
   button.addEventListener('click',function (event) {
     localStorage.runningPrompt += `\n${JSON.parse(localStorage.choices)[button.id]}\n`;
+
     gameLoop();
   });
 });
 
-
+document.getElementById("menu").addEventListener("change", function() {
+  var selectedOption = this.value;
+  if (selectedOption === "option1") {
+      document.getElementById("themeInput").value = "Survival"; // For example
+      document.getElementById("nameInput").value = "Gwylnagore"; // For example
+  } else if (selectedOption === "option2") {
+    document.getElementById("themeInput").value = "Post-apocalyptic"; 
+    document.getElementById("nameInput").value = "Bogdan"; 
+    } else if (selectedOption === "option3") {
+    document.getElementById("themeInput").value = "Fantasy"; 
+    document.getElementById("nameInput").value = "Nafraulos"; 
+  }
+});
 
 
 // You find yourself in a mysterious forest. The trees are tall and ancient, their trunks twisted and knotted like a gnarled hand. The air is still and silent, not even the rustle of a leaf can be heard. You look around and see a small clearing with a single boulder in the center. Feature> Boulder: Ancient, grey, and large.
-// Do you: 
+// Do you:
 // A) Approach the boulder
 // B) Look for a path
 // C) Listen for any sounds
