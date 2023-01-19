@@ -18,9 +18,10 @@ html{
 
 .gameContainer{
   display: grid;
-  height: 700px;
-  grid-template-columns: 75% 25%;
-  grid-template-rows: 80% 20%;
+  height: 600px;
+  width: 1000px;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 66% 34%;
   grid-template-areas: "textBox imageBox"
                         "buttonBox imageBox";  
   border: 1px solid white;
@@ -28,6 +29,7 @@ html{
 .textBox{
   grid-area: textBox;
   border: 1px solid white;
+  font-size: 20px;
 }
 .buttonBox{
   grid-area: buttonBox;

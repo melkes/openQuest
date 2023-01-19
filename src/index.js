@@ -13,9 +13,9 @@ async function getAPIData() {
     model: "text-davinci-003",
     prompt: localStorage.runningPrompt,
     max_tokens:350,
-    frequency_penalty: .5,
-    presence_penalty: .6,
-    temperature: .5,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+    temperature: .7,
     
     
   });
@@ -55,10 +55,32 @@ async function getAPIData() {
 //image loading function()
 // grab the response and parse from the initial send. needs to split up the scene
 
+async function createImage(imgPrompt) {
+  const response = await openai.createImage({
+    prompt: `${localStorage.theme} ${imgPrompt}`,
+    n: 1,
+    size: "512x512",
+  });
+  console.log(response.data.data[0].url);
+  console.log(openai)
+  return response.data.data[0].url;
+}
 
-
-function updateScene(scene, feature){
-  document.getElementById("dumpImage").innerText = feature;
+function updateScene(scene, feature=null){
+  if (feature) {
+    document.getElementById("image").innerText = null;
+    createImage(feature)
+      .then(function(url){
+        const img = document.createElement('img');
+        img.src = url;
+        img.width = '400';
+        document.getElementById('image').append(img);
+      })
+      .catch(function(error) {document.getElementById('image').innerText = error});
+    
+    //document.getElementById("dumpImage").innerText = feature;
+  }
+  
   document.getElementById("aiInput").innerText = scene;
 }
 
@@ -66,6 +88,12 @@ function updateOptions (choice1, choice2, choice3) {
   document.getElementById('input1').innerText = choice1;
   document.getElementById('input2').innerText = choice2;
   document.getElementById('input3').innerText = choice3;
+  let choices = {
+    input1: choice1,
+    input2: choice2,
+    input3: choice3,
+  }
+  localStorage.choices = JSON.stringify(choices);
 }
 
 function emailAmbi () {
@@ -78,8 +106,18 @@ function gameLoop() {
       localStorage.runningPrompt += response.data.choices[0].text;
       // only handles single response - need to account for full history in response👍
       console.log(response)
-      let [scene, remainder] = response.data.choices[0].text.split('Feature>');
-      let [feature, choices] = remainder.split('\n');
+      let scene;
+      let feature;
+      let remainder;
+      let choices;
+      if (response.data.choices[0].text.includes('Feature>')) {
+        [scene, remainder] = response.data.choices[0].text.split('Feature>');
+        [feature, choices] = remainder.split('\n');
+        
+      } else {
+        scene = response.data.choices[0].text.split('\n')
+        feature = null;
+      }      
       console.log(scene)
       console.log(remainder)
       console.log(feature)
@@ -109,6 +147,8 @@ function gameLoop() {
 
 function startGame(){
   const theme = document.getElementById('themeInput').value || 'fantasy';
+  localStorage.theme = theme;
+  localStorage.choices = {};
   initializePrompt(theme);
   let startBox = document.getElementById("startBox");
   startBox.classList.add("hidden");
@@ -121,19 +161,19 @@ function startGame(){
       //or parser
       //or display thing
       // and buttons => 
-  gameLoop()
+  gameLoop();
   //getAPIData().then(function (resp) {console.log(resp)})
   
 }
 //make sure we define choices with 1,2,3 *
 function initializePrompt(theme) {
-  localStorage.runningPrompt = `Greg is a choose-your-own-adventure generator in a ${theme} setting. He gives the user a scene description of between 100 and 200 words that contains one distinct feature or character. At the end of the scene description, he names and describes that feature on its own line in exactly 5 words, prefixed with the word "Feature>". Greg then offers three choices, each on their own line, for the user to select to move onto the next scene. After 3 scenes, he concludes the adventure. Do not include a scene title.`;
+  localStorage.runningPrompt = `Greg is a choose-your-own-adventure generator in a ${theme} setting. He gives the user a scene description of between 100 and 200 words that contains one distinct feature or character. At the end of the scene description, he names and describes that feature on its own line in exactly 5 words, prefixed with the word "Feature>". Greg then offers three choices, each on their own line, for the user to select to move onto the next scene. After 10 scenes, he concludes the adventure. Do not include a scene title.`;
 }
 
 document.getElementById("startButton").addEventListener('click', startGame);
 Array.from(document.getElementsByClassName('selection')).forEach(function(button){
   button.addEventListener('click',function (event) {
-    localStorage.runningPrompt += `Choice ${button.innerText}`;
+    localStorage.runningPrompt += `\n${JSON.parse(localStorage.choices)[button.id]}\n`;
     gameLoop();
   });
 });
