@@ -1,3 +1,23 @@
+// Image generation api call
+// size of 256x256, 512x512, or 1024x1024 pixels
+// Smaller sizes are faster to generate
+// n parameter is the number of photos generated
+
+// response image_url = response.data.data[0].url;
+
+// const { Configuration, OpenAIApi } = require("openai");
+// const configuration = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
+// const openai = new OpenAIApi(configuration);
+// const response = await openai.createImage({
+//   prompt: "FEATURE PROMPT",
+//   n: 1,
+//   size: "256x256",
+// });
+
+
+
 // const { Configuration, OpenAIApi } = require("openai");
 // process.env.OPENAI_API_KEY;
 
