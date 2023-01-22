@@ -21,7 +21,7 @@ async function getAPIData() {
     
 
   });
-  console.log(getAPIData().response);
+  console.log(response);
   return response;
 }
 
@@ -63,7 +63,7 @@ async function createImage(imgPrompt) {
   const response = await openai.createImage({
     prompt: `${localStorage.theme} ${imgPrompt}`,
     n: 1,
-    size: "512x512",
+    size: "256x256",
   });
   console.log(response.data.data[0].url);
   console.log(openai)
@@ -77,7 +77,7 @@ function updateScene(scene, feature=null){
       .then(function(url){
         const img = document.createElement('img');
         img.src = url;
-        img.width = '400';
+        img.width = '256';
         document.getElementById('image').append(img);
       })
       .catch(function(error) {document.getElementById('image').innerText = error});
@@ -151,7 +151,14 @@ function gameLoop() {
 
   // localStorage.runningPrompt
 }
-
+function loading(){
+  const loadingText = 
+  document.getElementById("loading").classList.remove("hidden");
+}
+function doneLoading(){
+  document.getElementById("loading").classList.add("hidden");
+  document.getElementById("playerInput").classList.remove("hidden");
+}
 
 function startGame(){
   const theme = document.getElementById('themeInput').value || 'fantasy';
@@ -182,7 +189,7 @@ function initializePrompt(theme) {
 document.getElementById("startButton").addEventListener('click', startGame);
 Array.from(document.getElementsByClassName('selection')).forEach(function(button){
   button.addEventListener('click',function (event) {
-    localStorage.runningPrompt += `\n${JSON.parse(localStorage.choices)[button.id]}\n`;
+    localStorage.runningPrompt += `${JSON.parse(localStorage.choices)[button.id]}`;
 
     gameLoop();
   });
