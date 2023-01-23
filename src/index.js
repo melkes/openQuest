@@ -167,8 +167,7 @@ function loading(){
 function imageLoading(){
   // const imageLoad = document.getElementById("loadingImage");
   document.getElementById("image").innerText = null;
-  const imageSource = "./assets/images/loading.gif"
-  
+  const imageSource = "https://i.gifer.com/origin/d3/d3da9b146d9472bbc97bdad44151baa0.gif"  
   const imageTag = document.createElement("img");
   imageTag.setAttribute("id", "loadingImage");
   imageTag.setAttribute("src", imageSource);
