@@ -11,52 +11,16 @@ async function getAPIData() {
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: localStorage.runningPrompt,
-
-
     max_tokens:350,
     frequency_penalty: 0,
     presence_penalty: 0,
     temperature: .7,
-    
     
 
   });
   console.log(response);
   return response;
 }
-
-// `
-// PROMPT 1
-// You find yourself standing in a clearing surrounded by tall trees and shady bushes. The sun is shining, but there is a chill in the air. In the center of the clearing is a large, ancient stone statue of a dragon. Its eyes seem to be watching you.
-// Feature> Ancient Stone Dragon Statue
-// Do you:
-// A) Approach the statue cautiously
-// B) Take a closer look
-// C) Turn and run away
-
-// PROMPT2
-// You find yourself standing in a clearing surrounded by tall trees and shady bushes. The sun is shining, but there is a chill in the air. In the center of the clearing is a large, ancient stone statue of a dragon. Its eyes seem to be watching you.
-// Feature> Ancient Stone Dragon Statue
-// Do you:
-// A) Approach the statue cautiously
-// B) Take a closer look
-// C) Turn and run away
-
-// Option 1: You cautiously approach the statue, and as you get closer, you notice that its eyes are glowing. You can feel a strange energy coming from it. Suddenly, the statue begins to move and it speaks to you in a deep and commanding voice.
-// Feature> Moving Dragon Statue
-// Do you:
-// A) Ask it a question
-// B) Stand and listen
-// C) Flee in terror
-
-// `
-
-//loading function ()
-//image loading function()
-// grab the response and parse from the initial send. needs to split up the scene
-
-
-
 
 
 async function createImage(imgPrompt) {
@@ -106,51 +70,61 @@ function emailAmbi() {
     "You broke it! Email ambio.pk@gmail.com to complain.";
 }
 
+function parseSingleLine(text) {
+  let scene;
+  let feature;
+  let remainder;
+  let choices;
+  let [choice1, choice2, choice3] = ['', '', ''];
+  if (text.includes('Feature>')) {
+    [scene, remainder] = text.split('Feature>');
+  }
+  if (text.includes(':')) {
+    [feature, choices] = remainder.split(':');
+    [choice1, choice2, choice3] = choices.split(',');
+  }
+  return [scene, feature, choice1, choice2, choice3];
+}
+
+
+function parseResponseText(text) {
+  text = text.trim()
+  if (text.split('\n').length === 1) {
+    return parseSingleLine(text);
+  }
+  let scene;
+  let feature;
+  let remainder;
+  let choices;
+  if (text.includes('Feature>')) {
+    [scene, remainder] = text.split('Feature>');
+    [feature, choices] = remainder.split('\n');
+    
+  } else {
+    scene = text.split('\n')[0];
+    feature = null;
+  }      
+  console.log(scene);
+  console.log(remainder);
+  console.log(feature);
+  console.log(choices);
+  const [choice1, choice2, choice3] = text.split('\n').slice(-3);
+
+  return [scene, feature, choice1, choice2, choice3];
+}
+
 function gameLoop() {
   getAPIData()
     .then(function (response) {
+      console.log(response);
       localStorage.runningPrompt += response.data.choices[0].text;
-      // only handles single response - need to account for full history in response👍
-
-      console.log(response)
-      let scene;
-      let feature;
-      let remainder;
-      let choices;
-      if (response.data.choices[0].text.includes('Feature>')) {
-        [scene, remainder] = response.data.choices[0].text.split('Feature>');
-        [feature, choices] = remainder.split('\n');
-        
-      } else {
-        scene = response.data.choices[0].text.split('\n')
-        feature = null;
-      }      
-      console.log(scene)
-      console.log(remainder)
-      console.log(feature)
-      console.log(choices)
-      const [choice1, choice2, choice3] = response.data.choices[0].text.split('\n').slice(-3);  //feature might break
-
-      //picture
+      const [scene, feature, choice1, choice2, choice3] = parseResponseText(response.data.choices[0].text)
       updateScene(scene, feature);
-      //update options
       updateOptions(choice1, choice2, choice3);
     })
     .catch(emailAmbi);
-
-  // printResponse(response);
-  //print response
-  //reads options
-  //handler function assigns to 3 buttons
-  //on click updates local.storage
-  //with new line opt 1 2 3
-  //runs getAPIData()
-  //re-run parsefuncion(new response);
-
-  // document.getElementById. .. . . .
-
-  // localStorage.runningPrompt
 }
+
 function loading(){
   const loadingText = 
   document.getElementById("loading").classList.remove("hidden");
@@ -189,8 +163,7 @@ function initializePrompt(theme) {
 document.getElementById("startButton").addEventListener('click', startGame);
 Array.from(document.getElementsByClassName('selection')).forEach(function(button){
   button.addEventListener('click',function (event) {
-    localStorage.runningPrompt += `${JSON.parse(localStorage.choices)[button.id]}`;
-
+    localStorage.runningPrompt += `\n\nUser selects "${JSON.parse(localStorage.choices)[button.id]}"\n`;
     gameLoop();
   });
 });
