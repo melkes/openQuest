@@ -18,7 +18,7 @@ async function getAPIData() {
     
 
   });
-  console.log(response);
+
   return response;
 }
 
@@ -30,26 +30,29 @@ async function createImage(imgPrompt) {
     size: "256x256",
   });
   console.log(response.data.data[0].url);
-  console.log(openai)
+  console.log(openai);
   return response.data.data[0].url;
 }
 
 function updateScene(scene, feature=null){
   if (feature) {
-    document.getElementById("image").innerText = null;
+  
     createImage(feature)
       .then(function(url){
-        const img = document.createElement('img');
-        img.src = url;
+        const img = document.getElementById("loadingImage");
+        img.setAttribute('src', url)
+        // img.src = url;
         img.width = '256';
         document.getElementById('image').append(img);
+       
       })
-      .catch(function(error) {document.getElementById('image').innerText = error});
-    
+      .catch(function(error) {document.getElementById('image').innerText = error;});
+      
     //document.getElementById("dumpImage").innerText = feature;
   }
-  
+    
   document.getElementById("aiInput").innerText = scene;
+  
 }
 
 function updateOptions (choice1, choice2, choice3) {
@@ -60,7 +63,7 @@ function updateOptions (choice1, choice2, choice3) {
     input1: choice1,
     input2: choice2,
     input3: choice3,
-  }
+  };
   localStorage.choices = JSON.stringify(choices);
 
 }
@@ -114,31 +117,59 @@ function parseResponseText(text) {
 }
 
 function gameLoop() {
+  // imageDoneLoading();
+  imageLoading();
   getAPIData()
     .then(function (response) {
       console.log(response);
       localStorage.runningPrompt += response.data.choices[0].text;
+
       const [scene, feature, choice1, choice2, choice3] = parseResponseText(response.data.choices[0].text)
       updateScene(scene, feature);
+
       updateOptions(choice1, choice2, choice3);
+      doneLoading(); 
     })
     .catch(emailAmbi);
 }
 
 function loading(){
-  const loadingText = 
-  document.getElementById("loading").classList.remove("hidden");
+  const loadingText = document.getElementById("loading");
+  const loadingDots = document.getElementById("loadingDots");
+  loadingDots.classList.remove("hidden");
+  loadingText.classList.remove("hidden");
 }
+function imageLoading(){
+  // const imageLoad = document.getElementById("loadingImage");
+  document.getElementById("image").innerText = null;
+  const imageSource = "https://i.gifer.com/origin/d3/d3da9b146d9472bbc97bdad44151baa0.gif"  
+  const imageTag = document.createElement("img");
+  imageTag.setAttribute("id", "loadingImage");
+  imageTag.setAttribute("src", imageSource);
+  imageTag.width='256'
+  const imgDiv = document.getElementById("image");
+  imgDiv.append(imageTag);
+  // imageTag.src = imageSource;
+}
+// function imageDoneLoading(){
+//   let loadingImage = document.getElementById("loadingImage");
+//   loadingImage.removeAttribute('img');
+  
+// }
 function doneLoading(){
-  document.getElementById("loading").classList.add("hidden");
-  document.getElementById("playerInput").classList.remove("hidden");
+  const loadingText = document.getElementById("loading");
+  const buttons = document.getElementById("playerInput");
+  const loadingDots = document.getElementById("loadingDots");
+  loadingDots.classList.add("hidden");
+  loadingText.classList.add("hidden");
+  buttons.classList.remove("hidden");
 }
 
 function startGame(){
+  loading();
   const theme = document.getElementById('themeInput').value || 'fantasy';
   localStorage.theme = theme;
   localStorage.choices = {};
-
   initializePrompt(theme);
   let startBox = document.getElementById("startBox");
   startBox.classList.add("hidden");
@@ -146,11 +177,11 @@ function startGame(){
   gameBox.classList.remove("hidden");
   //printResponse();
   //gameLoop()
-    //getAPIdata()
-      //.then()
-      //or parser
-      //or display thing
-      // and buttons => 
+  //getAPIdata()
+  //.then()
+  //or parser
+  //or display thing
+  // and buttons => 
 
   gameLoop();
   //getAPIData().then(function (resp) {console.log(resp)})
@@ -163,28 +194,23 @@ function initializePrompt(theme) {
 document.getElementById("startButton").addEventListener('click', startGame);
 Array.from(document.getElementsByClassName('selection')).forEach(function(button){
   button.addEventListener('click',function (event) {
+
     localStorage.runningPrompt += `\n\nUser selects "${JSON.parse(localStorage.choices)[button.id]}"\n`;
+
     gameLoop();
   });
 });
 
 document.getElementById("menu").addEventListener("change", function() {
-  var selectedOption = this.value;
+  let selectedOption = this.value;
   if (selectedOption === "option1") {
-      document.getElementById("themeInput").value = "Survival"; // For example
-      document.getElementById("nameInput").value = "Gwylnagore"; // For example
+    document.getElementById("themeInput").value = "Survival"; // For example
+    document.getElementById("nameInput").value = "Gwylnagore"; // For example
   } else if (selectedOption === "option2") {
     document.getElementById("themeInput").value = "Post-apocalyptic"; 
     document.getElementById("nameInput").value = "Bogdan"; 
-    } else if (selectedOption === "option3") {
+  } else if (selectedOption === "option3") {
     document.getElementById("themeInput").value = "Fantasy"; 
     document.getElementById("nameInput").value = "Nafraulos"; 
   }
 });
-
-
-// You find yourself in a mysterious forest. The trees are tall and ancient, their trunks twisted and knotted like a gnarled hand. The air is still and silent, not even the rustle of a leaf can be heard. You look around and see a small clearing with a single boulder in the center. Feature> Boulder: Ancient, grey, and large.
-// Do you:
-// A) Approach the boulder
-// B) Look for a path
-// C) Listen for any sounds

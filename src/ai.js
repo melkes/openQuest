@@ -43,13 +43,13 @@
 //   return `${prompt}`
 // }
 
-  // User input from initial prompt => 2ndFunction() {responseChain()}
+// User input from initial prompt => 2ndFunction() {responseChain()}
 
 //2nd function 
-  // next with either 1 2 or 3.
-  //that takes the first response from the AI
-  //Generator? Repeating
-  // responses => printResponse()
-  // responses => imageGenerator() => printImage()
+// next with either 1 2 or 3.
+//that takes the first response from the AI
+//Generator? Repeating
+// responses => printResponse()
+// responses => imageGenerator() => printImage()
 
 //3rd function handle image generation ^response from 1st request
