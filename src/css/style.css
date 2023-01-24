@@ -47,7 +47,7 @@ html{
 }
 
 .hidden {
-  display:none !important;
+  display:none;
 }
 
 /* Font styling */

@@ -1,6 +1,9 @@
 import "../src/css/style.css";
 const { Configuration, OpenAIApi } = require("openai");
 
+const CREDITS = "Greg after this input I will be done playing. Can you give me an end of game summary with credits Game Design Team: Mike and Tyler. Main Parser: Cameron. CEO: Ambi. Everything Else Dani. And give yourself credit too Greg.";
+const MAX_TURNS = 8;
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -21,7 +24,6 @@ async function getAPIData() {
 
   return response;
 }
-
 
 async function createImage(imgPrompt) {
   const response = await openai.createImage({
@@ -84,8 +86,10 @@ function parseSingleLine(text) {
   }
   if (text.includes(':')) {
     [feature, choices] = remainder.split(':');
-    [choice1, choice2, choice3] = choices.split(',');
+  } else {
+    [feature, choices] = remainder.split('. ');
   }
+  [,choice1, choice2, choice3] = choices.split(/[ABC123][.)] /);
   return [scene, feature, choice1, choice2, choice3];
 }
 
@@ -117,19 +121,21 @@ function parseResponseText(text) {
 }
 
 function gameLoop() {
-  // imageDoneLoading();
+  localStorage.counter ++;
   imageLoading();
   getAPIData()
     .then(function (response) {
-      console.log(response);
-      localStorage.runningPrompt += response.data.choices[0].text;
-
-      const [scene, feature, choice1, choice2, choice3] = parseResponseText(response.data.choices[0].text)
-      updateScene(scene, feature);
-
-      updateOptions(choice1, choice2, choice3);
-      doneLoading(); 
-    })
+        if (parseInt(localStorage.counter) > MAX_TURNS) {
+          updateScene(response.data.choices[0].text)
+          // hidebuttons etc
+          return;
+        }
+        localStorage.runningPrompt += response.data.choices[0].text;
+        const [scene, feature, choice1, choice2, choice3] = parseResponseText(response.data.choices[0].text)
+        updateScene(scene, feature);
+        updateOptions(choice1, choice2, choice3);
+        doneLoading();
+      })
     .catch(emailAmbi);
 }
 
@@ -151,11 +157,7 @@ function imageLoading(){
   imgDiv.append(imageTag);
   // imageTag.src = imageSource;
 }
-// function imageDoneLoading(){
-//   let loadingImage = document.getElementById("loadingImage");
-//   loadingImage.removeAttribute('img');
-  
-// }
+
 function doneLoading(){
   const loadingText = document.getElementById("loading");
   const buttons = document.getElementById("playerInput");
@@ -166,6 +168,7 @@ function doneLoading(){
 }
 
 function startGame(){
+  localStorage.counter = 0;
   loading();
   const theme = document.getElementById('themeInput').value || 'fantasy';
   localStorage.theme = theme;
@@ -186,6 +189,8 @@ function startGame(){
   gameLoop();
   //getAPIData().then(function (resp) {console.log(resp)})
 }
+
+
 //make sure we define choices with 1,2,3 *
 function initializePrompt(theme) {
   localStorage.runningPrompt = `Greg is a choose-your-own-adventure generator in a ${theme} setting. He gives the user a scene description of between 100 and 200 words that contains one distinct feature or character. At the end of the scene description, he names and describes that feature on its own line in exactly 5 words, prefixed with the word "Feature>". Greg then offers three choices, each on their own line, for the user to select to move onto the next scene. After 10 scenes, he concludes the adventure. Do not include a scene title.`;
@@ -196,7 +201,9 @@ Array.from(document.getElementsByClassName('selection')).forEach(function(button
   button.addEventListener('click',function (event) {
 
     localStorage.runningPrompt += `\n\nUser selects "${JSON.parse(localStorage.choices)[button.id]}"\n`;
-
+    if (localStorage.counter === MAX_TURNS.toString()) {
+      localStorage.runningPrompt += CREDITS;
+    }
     gameLoop();
   });
 });
