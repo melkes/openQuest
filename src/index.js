@@ -18,10 +18,7 @@ async function getAPIData() {
     frequency_penalty: 0,
     presence_penalty: 0,
     temperature: .7,
-    
-
   });
-
   return response;
 }
 
@@ -29,7 +26,7 @@ async function createImage(imgPrompt) {
   const response = await openai.createImage({
     prompt: `${localStorage.theme} ${imgPrompt}`,
     n: 1,
-    size: "256x256",
+    size: "512x512",
   });
   console.log(response.data.data[0].url);
   console.log(openai);
@@ -44,7 +41,7 @@ function updateScene(scene, feature=null){
         const img = document.getElementById("loadingImage");
         img.setAttribute('src', url)
         // img.src = url;
-        img.width = '256';
+        img.width = '386';
         document.getElementById('image').append(img);
        
       })
@@ -96,6 +93,9 @@ function parseSingleLine(text) {
 
 function parseResponseText(text) {
   text = text.trim()
+  if (text === "") {
+    throw new Error('reponse contained no text');
+  }
   if (text.split('\n').length === 1) {
     return parseSingleLine(text);
   }
@@ -110,11 +110,7 @@ function parseResponseText(text) {
   } else {
     scene = text.split('\n')[0];
     feature = null;
-  }      
-  console.log(scene);
-  console.log(remainder);
-  console.log(feature);
-  console.log(choices);
+  }
   const [choice1, choice2, choice3] = text.split('\n').slice(-3);
 
   return [scene, feature, choice1, choice2, choice3];
@@ -152,7 +148,7 @@ function imageLoading(){
   const imageTag = document.createElement("img");
   imageTag.setAttribute("id", "loadingImage");
   imageTag.setAttribute("src", imageSource);
-  imageTag.width='256'
+  imageTag.width='386'
   const imgDiv = document.getElementById("image");
   imgDiv.append(imageTag);
   // imageTag.src = imageSource;

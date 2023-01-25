@@ -1,6 +1,59 @@
-html{
-  background-color: black;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Fira Mono', monospace;
+  font-family: 'Merriweather', serif;
+  font-family: 'Poppins', sans-serif;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 14px;
+  color: #EEEEEE;
+  background-color: #121212;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  background-color: #3c4042;
+  margin-bottom: 1.5em;
+  min-width: 840px;
+}
+
+#nav-pad {
+  width: calc(50% - 500px);
+  min-width: 2.5%;
+}
+
+#nav-logo{
+  width: 10em;
+  padding: .3em;
+  padding-left: 0;
+}
+
+#gh-logo{
+  width: 2.2em;
+  padding: .2em;
+  left: 800px;
+}
+
+.to-right {
+  margin-left: auto;
+}
+
+.nav-link {
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  padding: .5em;
+  padding-left: 1.5em;
+  padding-right: 0;
   color: white;
+  font-size: 1rem;
+}
+
+#page {
+  width: 95%;
+  margin: auto;
+  max-width: 1000px;
 }
 
 .gameStartContainer{
@@ -13,7 +66,9 @@ html{
   margin:auto;
   padding: 20px;
   margin-top: 10em;
-  border: 1px solid white;
+  border: 1px solid #EEEEEE;
+  background-color: #1E1E1E;
+  box-shadow: 5px 5px 5px black;
 }
 
 .gameContainer{
@@ -23,27 +78,30 @@ html{
   grid-template-columns: 60% 40%;
   grid-template-rows: 66% 34%;
   grid-template-areas: "textBox imageBox"
-                        "buttonBox imageBox";  
-  border: 1px solid white;
+                        "buttonBox buttonBox";  
+  border: 1px solid #EEEEEE;
+  margin: auto;
+  background-color: #1E1E1E;
+  box-shadow: 5px 5px 5px black;
 }
 
 .textBox{
   padding: 5px;
   grid-area: textBox;
-  border: 1px solid white;
+  border: 1px solid #EEEEEE;
   font-size: 20px;
 }
 
 .buttonBox{
   padding: 5px; 
   grid-area: buttonBox;
-  border: 1px solid white;
+  border: 1px solid #EEEEEE;
 }
 
 .imageBox{
   padding: 5px;
   grid-area: imageBox;
-  border: 1px solid white;
+  border: 1px solid #EEEEEE;
 }
 
 .hidden {

@@ -3,36 +3,45 @@
   <title>AI Adventure</title>
 </head>
 <body>
-  <div id="startBox"class="gameStartContainer">
-    <div class="gameStart"> </div>
-    <label for="menu">Select an option:</label>
-    <select id="menu" name="menu">
-      <option value="option0">---</option>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
-    </select>
-      <label for="themeInput">Please enter a theme</label>  
-      <input id='themeInput'type="text">
-      <label for="nameInput">Choose Your name</label>
-      <input id="nameInput" type="text">
-      <button id='startButton'type="btn">START</button>
-    </div>
-  </div>  
-  <div id='gameBox' class="gameContainer hidden">
-    <div class='textBox'id="gameText">
-      <p id="aiInput"></p>
-      <p id="loading" class="hidden"><div id="loadingDots">Loading <span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
-    </p>
-    </div>
-    <div class='buttonBox hidden'id="playerInput">
-      <p id="loading" class="hidden">Loading...</p>
-      <button id='input1' class='selection' type="btn">1</button>
-      <button id="input2" class='selection' type="btn">2</button>
-      <button id='input3' class='selection' type="btn">3</button>
-    </div>
-    <div class='imageBox'id="image">
-     
+  <nav>
+    <span id="nav-pad"></span>
+    <a href="index.html"><img id="nav-logo" src="./assets/images/logo.png" alt="nav-bar-logo"/></a>
+    <a href="https://github.com/ambibma/teamWeek-1" class="to-right nav-link" target="_blank"><img id="gh-logo" src="./assets/images/github-mark-white.png"></a>
+    <a href="mailto:ambio.pk@gmail.com" class="nav-link">Contact</a>
+    <span id="nav-pad"></span>
+  </nav>
+  <div id="page">
+    <div id="startBox"class="gameStartContainer">
+      <div class="gameStart"> </div>
+      <label for="menu">Select an option:</label>
+      <select id="menu" name="menu">
+        <option value="option0">---</option>
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+      </select>
+        <label for="themeInput">Please enter a theme</label>  
+        <input id='themeInput'type="text">
+        <label for="nameInput">Choose Your name</label>
+        <input id="nameInput" type="text">
+        <button id='startButton'type="btn">START</button>
+      </div>
+    </div>  
+    <div id='gameBox' class="gameContainer hidden">
+      <div class='textBox'id="gameText">
+        <p id="aiInput"></p>
+        <p id="loading" class="hidden"><div id="loadingDots">Loading <span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+      </p>
+      </div>
+      <div class='buttonBox hidden'id="playerInput">
+        <p id="loading" class="hidden">Loading...</p>
+        <button id='input1' class='selection' type="btn">1</button>
+        <button id="input2" class='selection' type="btn">2</button>
+        <button id='input3' class='selection' type="btn">3</button>
+      </div>
+      <div class='imageBox'id="image">
+      
+      </div>
     </div>
   </div>
 </body>
