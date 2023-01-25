@@ -25,7 +25,7 @@ nav {
 }
 
 #nav-logo{
-  width: 10em;
+  width: 3em;
   padding: .3em;
   padding-left: 0;
 }
@@ -54,6 +54,20 @@ nav {
   width: 95%;
   margin: auto;
   max-width: 1000px;
+  text-align: center;
+}
+
+h1 {
+  background-color: #1E1E1E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  font-size: 50px;
+  border: 1px solid #EEEEEE;
+  background-color: #1E1E1E;
 }
 
 .gameStartContainer{
@@ -170,6 +184,32 @@ body {
   box-shadow: #D6D6E7 0 3px 7px inset;
   transform: translateY(2px);
 }
+
+#reset {
+  display: block;
+  width: 100%;
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  color: #000;
+  cursor: pointer;
+  border: 1px solid;
+  padding: 0.25em 0.5em;
+  position: relative;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+#reset:hover {
+  background-color: black;
+  color: white;
+}
+
+#reset:active {
+  box-shadow: #D6D6E7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
 
 #loadingDots {
   font-size: inherit;

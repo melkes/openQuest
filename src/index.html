@@ -1,6 +1,6 @@
 <html lang="en-US">
 <head>
-  <title>AI Adventure</title>
+  <title>openQuest | AI Text-Adventure Game</title>
 </head>
 <body>
   <nav>
@@ -11,16 +11,17 @@
     <span id="nav-pad"></span>
   </nav>
   <div id="page">
+    <h1>open<img src="./assets/images/logo.png" width="90">uest</h1>
     <div id="startBox"class="gameStartContainer">
       <div class="gameStart"> </div>
-      <label for="menu">Select an option:</label>
+      <label for="menu">Select a preset:</label>
       <select id="menu" name="menu">
         <option value="option0">---</option>
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
+        <option value="option1">Cyberpunk</option>
+        <option value="option2">Matthew McConaughey Dating Simulator</option>
+        <option value="option3">AI Takeover Survival</option>
       </select>
-        <label for="themeInput">Please enter a theme</label>  
+        <label for="themeInput">Or enter your own theme</label>  
         <input id='themeInput'type="text">
         <label for="nameInput">Choose Your name</label>
         <input id="nameInput" type="text">
@@ -34,11 +35,13 @@
       </p>
       </div>
       <div class='buttonBox hidden'id="playerInput">
-        <p id="loading" class="hidden">Loading...</p>
-        <button id='input1' class='selection' type="btn">1</button>
-        <button id="input2" class='selection' type="btn">2</button>
-        <button id='input3' class='selection' type="btn">3</button>
-        <br>
+        <div id="optionButtons">
+          <p id="loading" class="hidden">Loading...</p>
+          <button id='input1' class='selection' type="btn">1</button>
+          <button id="input2" class='selection' type="btn">2</button>
+          <button id='input3' class='selection' type="btn">3</button>
+          <br>
+        </div>
         <button id="reset" type="btn">Reset Game</button>
       </div>
       <div class='imageBox'id="image">

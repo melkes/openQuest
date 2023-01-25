@@ -18,9 +18,10 @@ module.exports = {
     }),
     new ESLintPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Shape Tracker',
+      title: 'open-quest',
       template: './src/index.html',
-      inject: 'body'
+      inject: 'body',
+      favicon: './src/assets/images/icon.png'
     })
   ],
   module: {

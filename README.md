@@ -1,6 +1,6 @@
 
 # openQuest
-![](/assets/images/currency.jpg "currency image")
+![](/assets/images/logo.jpg "currency image")
 ---
 #### By Ambi Hidalgo, Dani Steely, Cameron Abel, Mike Wilkes & Tyler Quinn
 ###### ambio.pk@gmail.com

@@ -39,7 +39,7 @@ function updateScene(scene, feature=null){
     createImage(feature)
       .then(function(url){
         const img = document.getElementById("loadingImage");
-        img.setAttribute('src', url)
+        img.setAttribute('src', url);
         // img.src = url;
         img.width = '386';
         document.getElementById('image').append(img);
@@ -70,6 +70,7 @@ function updateOptions (choice1, choice2, choice3) {
 function emailAmbi() {
   document.getElementById("aiInput").innerText =
     "You broke it! Email ambio.pk@gmail.com to complain.";
+  document.getElementById("optionButtons").setAttribute("class", "hidden");
 }
 
 function parseSingleLine(text) {
@@ -92,7 +93,7 @@ function parseSingleLine(text) {
 
 
 function parseResponseText(text) {
-  text = text.trim()
+  text = text.trim();
   if (text === "") {
     throw new Error('reponse contained no text');
   }
@@ -102,10 +103,9 @@ function parseResponseText(text) {
   let scene;
   let feature;
   let remainder;
-  let choices;
   if (text.includes('Feature>')) {
     [scene, remainder] = text.split('Feature>');
-    [feature, choices] = remainder.split('\n');
+    [feature,] = remainder.split('\n');
     
   } else {
     scene = text.split('\n')[0];
@@ -121,17 +121,17 @@ function gameLoop() {
   imageLoading();
   getAPIData()
     .then(function (response) {
-        if (parseInt(localStorage.counter) > MAX_TURNS) {
-          updateScene(response.data.choices[0].text)
-          // hidebuttons etc
-          return;
-        }
-        localStorage.runningPrompt += response.data.choices[0].text;
-        const [scene, feature, choice1, choice2, choice3] = parseResponseText(response.data.choices[0].text)
-        updateScene(scene, feature);
-        updateOptions(choice1, choice2, choice3);
-        doneLoading();
-      })
+      if (parseInt(localStorage.counter) > MAX_TURNS) {
+        updateScene(response.data.choices[0].text);
+        document.getElementById("optionButtons").setAttribute("class", "hidden");
+        return;
+      }
+      localStorage.runningPrompt += response.data.choices[0].text;
+      const [scene, feature, choice1, choice2, choice3] = parseResponseText(response.data.choices[0].text);
+      updateScene(scene, feature);
+      updateOptions(choice1, choice2, choice3);
+      doneLoading();
+    })
     .catch(emailAmbi);
 }
 
@@ -144,11 +144,11 @@ function loading(){
 function imageLoading(){
   // const imageLoad = document.getElementById("loadingImage");
   document.getElementById("image").innerText = null;
-  const imageSource = "https://i.gifer.com/origin/d3/d3da9b146d9472bbc97bdad44151baa0.gif"  
+  const imageSource = "https://i.gifer.com/origin/d3/d3da9b146d9472bbc97bdad44151baa0.gif";
   const imageTag = document.createElement("img");
   imageTag.setAttribute("id", "loadingImage");
   imageTag.setAttribute("src", imageSource);
-  imageTag.width='386'
+  imageTag.width='386';
   const imgDiv = document.getElementById("image");
   imgDiv.append(imageTag);
   // imageTag.src = imageSource;
@@ -194,8 +194,7 @@ function initializePrompt(theme) {
 
 document.getElementById("startButton").addEventListener('click', startGame);
 Array.from(document.getElementsByClassName('selection')).forEach(function(button){
-  button.addEventListener('click',function (event) {
-
+  button.addEventListener('click',function () {
     localStorage.runningPrompt += `\n\nUser selects "${JSON.parse(localStorage.choices)[button.id]}"\n`;
     if (localStorage.counter === MAX_TURNS.toString()) {
       localStorage.runningPrompt += CREDITS;
@@ -207,13 +206,13 @@ Array.from(document.getElementsByClassName('selection')).forEach(function(button
 document.getElementById("menu").addEventListener("change", function() {
   let selectedOption = this.value;
   if (selectedOption === "option1") {
-    document.getElementById("themeInput").value = "Survival"; // For example
+    document.getElementById("themeInput").value = "Cyberpunk"; // For example
     document.getElementById("nameInput").value = "Gwylnagore"; // For example
   } else if (selectedOption === "option2") {
-    document.getElementById("themeInput").value = "Post-apocalyptic"; 
+    document.getElementById("themeInput").value = "Matthew McConaughey dating simulator"; 
     document.getElementById("nameInput").value = "Bogdan"; 
   } else if (selectedOption === "option3") {
-    document.getElementById("themeInput").value = "Fantasy"; 
+    document.getElementById("themeInput").value = "AI takeover / post-apocalyptic survival"; 
     document.getElementById("nameInput").value = "Nafraulos"; 
   }
 });
