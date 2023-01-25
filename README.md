@@ -1,13 +1,13 @@
 
-# openQuest
-![](./src/assets/images/logo.png "openQuest image")
+<center><img src="./src/assets/images/mainlogo.png" width="400" height="auto"></center>
+
 ---
 #### By Ambi Hidalgo, Dani Steely, Cameron Abel, Mike Wilkes & Tyler Quinn
 ###### ambio.pk@gmail.com
-danisteelyart@gmail.com
-tyler.quinn032@gmail.com
-mw.wilkes@gmail.com
-cameronabel@gmail.com
+###### danisteelyart@gmail.com
+###### tyler.quinn032@gmail.com
+###### mw.wilkes@gmail.com
+###### cameronabel@gmail.com
 
 ---
 
