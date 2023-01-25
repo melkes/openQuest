@@ -9,9 +9,6 @@ tyler.quinn032@gmail.com
 mw.wilkes@gmail.com
 cameronabel@gmail.com
 
-###### Background image by Jeremy Perkins https://unsplash.com/@jeremyperkins
-###### Earth .gif by NASA
-
 ---
 
 ####  openQuest
