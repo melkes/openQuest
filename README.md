@@ -1,6 +1,6 @@
 
 # openQuest
-![](.src/assets/images/logo.png "openQuest image")
+![](./src/assets/images/logo.png "openQuest image")
 ---
 #### By Ambi Hidalgo, Dani Steely, Cameron Abel, Mike Wilkes & Tyler Quinn
 ###### ambio.pk@gmail.com
