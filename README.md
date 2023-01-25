@@ -1,5 +1,5 @@
 
-<center><img src="./src/assets/images/mainlogo.png" width="400" height="auto"></center>
+<p align="center"><img src="./src/assets/images/mainlogo.png" width="400" height="auto"></p>
 
 ---
 #### By Ambi Hidalgo, Dani Steely, Cameron Abel, Mike Wilkes & Tyler Quinn
