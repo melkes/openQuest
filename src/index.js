@@ -1,7 +1,7 @@
 import "../src/css/style.css";
 const { Configuration, OpenAIApi } = require("openai");
 
-const CREDITS = "Greg after this input I will be done playing. Can you give me an end of game summary with credits Game Design Team: Mike and Tyler. Main Parser: Cameron. CEO: Ambi. Everything Else Dani. And give yourself credit too Greg.";
+const CREDITS = "Greg after this input I will be done playing. Can you give me an end of game summary with credits Game Design Team: Mike Wilkes and Tyler Quinn. Senior Parser: Cameron Able. Game Direction: Ambi Hidalgo. Everything Else: Dani Steely. And give yourself credit too Greg.";
 const MAX_TURNS = 8;
 
 const configuration = new Configuration({
@@ -216,4 +216,8 @@ document.getElementById("menu").addEventListener("change", function() {
     document.getElementById("themeInput").value = "Fantasy"; 
     document.getElementById("nameInput").value = "Nafraulos"; 
   }
+});
+
+document.getElementById("reset").addEventListener('click', function() {
+  location.reload();
 });
