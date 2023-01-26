@@ -1,7 +1,7 @@
 import "../src/css/style.css";
 const { Configuration, OpenAIApi } = require("openai");
 
-const CREDITS = "Greg after this input I will be done playing. Can you give me an end of game summary with credits Game Design Team: Mike Wilkes and Tyler Quinn. Senior Parser: Cameron Able. Game Direction: Ambi Hidalgo. Everything Else: Dani Steely. And give yourself credit too Greg.";
+const CREDITS = "Greg after this input I will be done playing. Can you give me an end of game summary with credits Game Design Team: Mike Wilkes and Tyler Quinn. Senior Parser: Cameron Abel. Game Direction: Ambi Hidalgo. Everything Else: Dani Steely. And give yourself credit too Greg.";
 const MAX_TURNS = 8;
 
 const configuration = new Configuration({
@@ -28,8 +28,6 @@ async function createImage(imgPrompt) {
     n: 1,
     size: "512x512",
   });
-  console.log(response.data.data[0].url);
-  console.log(openai);
   return response.data.data[0].url;
 }
 
@@ -67,9 +65,10 @@ function updateOptions (choice1, choice2, choice3) {
 
 }
 
-function emailAmbi() {
+function emailAmbi(error) {
   document.getElementById("aiInput").innerText =
-    "You broke it! Email ambio.pk@gmail.com to complain.";
+    `You broke it! Email ambio.pk@gmail.com to complain.
+    ${error}`;
   document.getElementById("optionButtons").setAttribute("class", "hidden");
 }
 
@@ -83,10 +82,11 @@ function parseSingleLine(text) {
     [scene, remainder] = text.split('Feature>');
   }
   if (text.includes(':')) {
-    [feature, choices] = remainder.split(':');
+    [feature, ...choices] = remainder.split(':');
   } else {
-    [feature, choices] = remainder.split('. ');
+    [feature, ...choices] = remainder.split('. ');
   }
+  choices = choices.join('');
   [,choice1, choice2, choice3] = choices.split(/[ABC123][.)] /);
   return [scene, feature, choice1, choice2, choice3];
 }
@@ -103,16 +103,22 @@ function parseResponseText(text) {
   let scene;
   let feature;
   let remainder;
+  let choices;
+  let [choice1, choice2, choice3] = ['', '', ''];
+
   if (text.includes('Feature>')) {
     [scene, remainder] = text.split('Feature>');
-    [feature,] = remainder.split('\n');
+    [feature, ...choices] = remainder.split('\n');
+    choices = choices.join('');
+    //choices = choices || '';
     
   } else {
     scene = text.split('\n')[0];
     feature = null;
   }
-  const [choice1, choice2, choice3] = text.split('\n').slice(-3);
-
+  if (choices.trim()) {
+    [choice1, choice2, choice3] = text.split('\n').slice(-3);
+  } 
   return [scene, feature, choice1, choice2, choice3];
 }
 
