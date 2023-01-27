@@ -26,7 +26,7 @@ Is an AI-driven text-adventure game developed during students' first Team Week a
 ## Setup/Installation Requirements
 Note: you will need your own API key from openAI to be able to play this game. 
 A free API key for for  can be found [here](https://beta.openai.com/docs/api-reference/authentication).
-* Clone this repository (https://github.com/ambibma/https://github.com/ambibma/teamWeek-1)
+* Clone this repository (https://github.com/melkes/openQuest)
 * using terminal to navigate to teamWeek-1 repository file
 * Once in the project directory
   ```bash
